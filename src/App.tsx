@@ -18,10 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={
                 <Card title="Login">
-                  <Button onClick={() => {
-                      AuthService.login()
-                    }
-                  }>Spotify</Button>
+                  <Button href={`${import.meta.env.VITE_API_BASE_URL}/login`} type="link">Spotify</Button>
                 </Card>
               }
             />
