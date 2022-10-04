@@ -1,7 +1,7 @@
 import ArtistExplorerClient from "./ArtistExplorerClient";
 
 function login() {
-  ArtistExplorerClient.get("/login")
+  ArtistExplorerClient.get("/login", {withCredentials: true})
 }
 
 function getAccessToken(code: string, state: string) {
@@ -9,7 +9,8 @@ function getAccessToken(code: string, state: string) {
     params: {
       code,
       state
-    }
+    },
+    withCredentials: true
   })
 }
 
