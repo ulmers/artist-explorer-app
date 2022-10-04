@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start": "npx http-server ./dist",
+    "start": "npx http-server ./dist -P http://localhost:8080?",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
