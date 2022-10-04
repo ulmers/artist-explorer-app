@@ -16,15 +16,15 @@ function App() {
       <Content>
         <Router>
           <Routes>
-            <Route path="/" element={
+            <Route path="" element={
                 <Card title="Login">
                   <Button href={`${import.meta.env.VITE_API_BASE_URL}/login`} type="link">Spotify</Button>
                 </Card>
               }
             />
-            <Route path="/callback*" element={<AccessTokenRetriever/>}/>
+            <Route path="callback*" element={<AccessTokenRetriever/>}/>
             <Route path="collect-token" element={<AccessTokenCollector/>}/>
-            <Route path="/artist-explorer" element={<ArtistExplorer/>}></Route>
+            <Route path="artist-explorer" element={<ArtistExplorer/>}></Route>
           </Routes>
         </Router>
       </Content>
