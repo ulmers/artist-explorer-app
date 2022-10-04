@@ -22,8 +22,7 @@ function App() {
                 </Card>
               }
             />
-            <Route path="callback*" element={<AccessTokenRetriever/>}/>
-            <Route path="collect-token" element={<AccessTokenCollector/>}/>
+            <Route path="callback/*" element={<AccessTokenRetriever/>}/>
             <Route path="artist-explorer" element={<ArtistExplorer/>}></Route>
           </Routes>
         </Router>
@@ -39,10 +38,26 @@ function AccessTokenRetriever(){
   const code = params.get("code")
   const state = params.get("state")
 
-  const fetchAccessToken = useCallback( () => {
+  const fetchAccessToken = useCallback( async () => {
 
     if (code && state) {
-      AuthService.getAccessToken(code, state)
+      const tokens = await AuthService.getAccessToken(
+        code,
+        state
+      )
+      localStorage.setItem(
+        "access_token",
+        tokens.access_token
+      )
+      localStorage.setItem(
+        "refresh_token",
+        tokens.refresh_token
+      )
+      window.history.pushState(
+        {},
+        '',
+        '/artist-explorer'
+      )
     }
   }, [])
 
@@ -51,20 +66,6 @@ function AccessTokenRetriever(){
   }, [])
   return (
     <>Loading</>
-  )
-}
-
-function AccessTokenCollector() {
-  const location = useLocation()
-  const params = new URLSearchParams(location.search)
-
-  useEffect(() => {
-    localStorage.setItem("access_token", params.get("access_token") || '')
-    localStorage.setItem("refresh_token", params.get("refresh_token") || '')
-    window.history.pushState({}, '', '/artist-explorer')
-  }, [])
-  return (
-    <>Collecting</>
   )
 }
 
