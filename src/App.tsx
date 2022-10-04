@@ -1,4 +1,5 @@
 import './App.css'
+import 'antd/dist/antd.css';
 import {Button, Card, Layout} from "antd";
 import {BrowserRouter as Router, Route, Routes, useLocation} from "react-router-dom"
 import {useCallback, useEffect} from "react";
@@ -17,7 +18,10 @@ function App() {
           <Routes>
             <Route path="/" element={
                 <Card title="Login">
-                  <Button>Spotify</Button>
+                  <Button onClick={() => {
+                      AuthService.login()
+                    }
+                  }>Spotify</Button>
                 </Card>
               }
             />
