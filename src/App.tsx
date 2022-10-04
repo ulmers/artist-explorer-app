@@ -1,44 +1,75 @@
-import { useState } from 'react'
-import logo from './logo.svg'
 import './App.css'
+import {Button, Card, Layout} from "antd";
+import {BrowserRouter as Router, Route, Routes, useLocation} from "react-router-dom"
+import {useCallback, useEffect} from "react";
+import AuthService from "./service/AuthService";
+
+const {Header, Content} = Layout
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <Layout>
+      <Header></Header>
+      <Content>
+        <Router>
+          <Routes>
+            <Route path="/" element={
+                <Card title="Login">
+                  <Button>Spotify</Button>
+                </Card>
+              }
+            />
+            <Route path="/callback" element={<AccessTokenRetriever/>}/>
+            <Route path="collect-token" element={<AccessTokenCollector/>}/>
+            <Route path="/artist-explorer" element={<ArtistExplorer/>}></Route>
+          </Routes>
+        </Router>
+      </Content>
+    </Layout>
+  )
+}
+
+function AccessTokenRetriever(){
+
+  const location = useLocation()
+  const params = new URLSearchParams(location.search)
+  const code = params.get("code")
+  const state = params.get("state")
+
+  const fetchAccessToken = useCallback( () => {
+
+    if (code && state) {
+      AuthService.getAccessToken(code, state)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchAccessToken()
+  }, [])
+  return (
+    <>Loading</>
+  )
+}
+
+function AccessTokenCollector() {
+  const location = useLocation()
+  const params = new URLSearchParams(location.search)
+
+  useEffect(() => {
+    localStorage.setItem("access_token", params.get("access_token") || '')
+    localStorage.setItem("refresh_token", params.get("refresh_token") || '')
+    window.history.pushState({}, '', '/artist-explorer')
+  }, [])
+  return (
+    <>Collecting</>
+  )
+}
+
+function ArtistExplorer() {
+  return (
+    <></>
   )
 }
 
