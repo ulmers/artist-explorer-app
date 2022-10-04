@@ -22,7 +22,7 @@ function App() {
                 </Card>
               }
             />
-            <Route path="/callback" element={<AccessTokenRetriever/>}/>
+            <Route path="/callback*" element={<AccessTokenRetriever/>}/>
             <Route path="collect-token" element={<AccessTokenCollector/>}/>
             <Route path="/artist-explorer" element={<ArtistExplorer/>}></Route>
           </Routes>
